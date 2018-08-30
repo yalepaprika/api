@@ -117,7 +117,7 @@ add_action( 'rest_api_init', 'add_home_route' );
 
 add_filter('the_content', function( $content ){
     //--Remove all inline styles--
-    $content = preg_replace('/ style=("|\')(.*?)("|\')/','',$content);
+    $content = preg_replace('/(<[^>]*) style=("[^"]+"|\'[^\']+\')([^>]*>)/i', '$1$3', $content);
     return $content;
 }, 20);
 
