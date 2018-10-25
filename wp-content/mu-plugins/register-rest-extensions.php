@@ -64,9 +64,21 @@ function contributor_add_meta() {
         array(
             'get_callback'    => function( $object, $field_name ) {
                 $fields = CFS()->get( false, $object[ 'id' ], array( 'format' => 'raw' ) );
-                $related_ids = CFS()->get_reverse_related($object[ 'id' ]);
-                // TODO: break out posts, folds
-                $fields['related_posts'] = $related_ids;
+                $folds_edited = CFS()->get_reverse_related($object[ 'id' ], array(
+                    'field_name' => 'fold_editors',
+                    'post_type' => 'fold'
+                ));
+                $folds_designed = CFS()->get_reverse_related($object[ 'id' ], array(
+                    'field_name' => 'graphic_designer',
+                    'post_type' => 'fold'
+                ));
+                $posts_contributed = CFS()->get_reverse_related($object[ 'id' ], array(
+                    'field_name' => 'contributors',
+                    'post_type' => 'post'
+                ));
+                $fields['folds_edited'] = $folds_edited;
+                $fields['folds_designed'] = $folds_designed;
+                $fields['posts_contributed'] = $posts_contributed;
                 return $fields;
             },
             'update_callback' => null,
